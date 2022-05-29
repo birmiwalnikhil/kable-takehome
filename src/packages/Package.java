@@ -7,16 +7,16 @@ import java.util.HashSet;
 public class Package {
   
   /** The name of the package, e.g. `vim`. */
-  private final String name;
+  final String name;
 
   /** All packages that this package depends on. */
-  private final Set<Package> dependencies;
+  final Set<Package> dependencies;
 
   /** All packages that this package is needed for. */
   private final Set<Package> neededFor;
 
   /** Whether this package is installed. */
-  private boolean isInstalled;
+  boolean isInstalled;
 
   public Package(String name) {
     this.name = name;
@@ -33,8 +33,8 @@ public class Package {
     this.neededFor.add(upstream);
   }
 
-  public void install() {
-    // TODO: Implement.
+  public void setInstall(boolean isInstalled) {
+    this.isInstalled = isInstalled;
   }
 
   public void uninstall() {

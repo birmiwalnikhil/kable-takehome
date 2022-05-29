@@ -32,7 +32,7 @@ otherDependencies) {
       return;
     } 
 
-    Package primaryPackage = new Package(packageA);
+    Package primaryPackage = getPackage(packageA); 
     Set<String> dependencies = new HashSet<>();
     dependencies.add(dependency);
     for (String otherDependency : otherDependencies) {
@@ -42,7 +42,7 @@ otherDependencies) {
     // For each dependency B, indicate that A is dependent on B,
     // and that B is needed for A.
     for (String b : dependencies) {
-      Package dep = packages.getOrDefault(b, new Package(b));
+      Package dep = getPackage(b); 
       primaryPackage.addDependency(dep);
       dep.addNeededFor(primaryPackage);
     }
@@ -57,9 +57,23 @@ otherDependencies) {
     return;
   }
 
-  // TODO: Implement.
-  public void install(String packageA) {}
+  /** Install {@code packageA}, as well as any uninstalled dependencies. */
+  public void install(String packageA) {
+    installPackage(getPackage(packageA));
+    echo("INSTALL %s", packageA); 
+  }
 
+  private void installPackage(Package packageA) {
+    // Recursively install any of the dependencies.
+    for (Package dep : packageA.dependencies) {
+      installPackage(dep);
+    }
+
+    // Mark this package as installed, and echo back to the user.
+    packageA.setInstall(true);
+    echo("\tInstalling %s", packageA.name); 
+  }
+  
   // TODO: Implement.
   public void remove(String packageA) {}
 
@@ -69,5 +83,10 @@ otherDependencies) {
   /** Echo some feedback to the user. */
   private void echo(String formatLog, Object... objects) {
     System.out.println(String.format(formatLog, objects));
+  }
+
+  /** Retrieve a package given it's name, or create one if need be. */
+  private Package getPackage(String name) {
+    return this.packages.getOrDefault(name, new Package(name));
   }
 }
