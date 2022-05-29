@@ -57,6 +57,12 @@ otherDependencies) {
   /** Install {@code packageA}, as well as any uninstalled dependencies. */
   public void install(String packageA) {
     echo("INSTALL %s", packageA); 
+    Package p = getPackage(packageA);
+    if (p.isInstalled) {
+      echo("\t%s is already installed.", p.name);
+      return;
+    }
+
     installPackage(getPackage(packageA));
   }
 
@@ -123,6 +129,11 @@ otherDependencies) {
       }
     }
   }
+
+  // TODO: No longer accept any inputs.
+  public void end() {
+    echo("END");
+  } 
 
   public void debugLog() {
     for (Package p : this.packages.values()) {

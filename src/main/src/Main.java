@@ -30,5 +30,34 @@ public class Main {
     packageManager.install(TCPIP);
     packageManager.remove(NETCARD);
     packageManager.remove(TCPIP);
+    packageManager.remove(NETCARD);
+    packageManager.install(TCPIP);
+    packageManager.list();
+    packageManager.install(TCPIP);
+    packageManager.install("foo");
+    packageManager.remove(TCPIP); 
+    packageManager.install(NETCARD);
+    packageManager.install(TCPIP);
+    packageManager.remove(TCPIP);
+    packageManager.list();
+    packageManager.install(TCPIP);
+    packageManager.install(NETCARD);
+    packageManager.remove(TCPIP);
+    packageManager.list();
+    packageManager.remove(NETCARD);
+    packageManager.install(BROWSER);
+    packageManager.list();
+    packageManager.remove(BROWSER);
+    packageManager.list();
+    packageManager.install(HTML);
+    packageManager.install(TELNET);
+    packageManager.remove(SOCKET);
+    packageManager.install(DNS);
+    packageManager.install(BROWSER);
+    packageManager.remove(NETCARD);
+    packageManager.list();
+    packageManager.remove(BROWSER);
+    packageManager.list();
+    packageManager.end();
   }
 }
