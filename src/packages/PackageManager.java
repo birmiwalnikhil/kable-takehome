@@ -28,9 +28,7 @@ public class PackageManager {
 otherDependencies) {
     // PackageA must not already be defined, as per the spec.
     if (packages.containsKey(packageA)) {
-      echo(
-        String.format("DEPEND on %s invalid; package already defined.",
-packageA));
+      echo("DEPEND on %s invalid; package already defined.", packageA);
       return;
     } 
 
@@ -48,7 +46,14 @@ packageA));
       primaryPackage.addDependency(dep);
       dep.addNeededFor(primaryPackage);
     }
+    
+    // Echo the output, as per spec.
+    String formatLog = "DEPEND %s %s";
+    for (int i = 1; i <= otherDependencies.length; i++) {
+      formatLog += " %s";
+    }
 
+    echo(formatLog, packageA, dependency, otherDependencies);
     return;
   }
 
@@ -62,7 +67,7 @@ packageA));
   public void list()  {}
 
   /** Echo some feedback to the user. */
-  private void echo(String log) {
-    System.out.println(log);
+  private void echo(String formatLog, Object... objects) {
+    System.out.println(String.format(formatLog, objects));
   }
 }
