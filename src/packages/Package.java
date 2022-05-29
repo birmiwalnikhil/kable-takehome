@@ -4,7 +4,7 @@ import java.util.Set;
 import java.util.HashSet;
 
 /** Define a package that is provided by one of the top level commands. */
-public class Package {
+class Package {
   
   /** The name of the package, e.g. `vim`. */
   final String name;
@@ -18,26 +18,26 @@ public class Package {
   /** Whether this package is installed. */
   boolean isInstalled;
 
-  public Package(String name) {
+  Package(String name) {
     this.name = name;
     this.dependencies = new HashSet<>();
     this.neededFor = new HashSet<>();
     this.isInstalled = false;
   }
 
-  public void addDependency(Package dependency) {
+  void addDependency(Package dependency) {
     this.dependencies.add(dependency);
   }
 
-  public void addNeededFor(Package upstream) {
+  void addNeededFor(Package upstream) {
     this.neededFor.add(upstream);
   }
 
-  public void setInstall(boolean isInstalled) {
+  void setInstall(boolean isInstalled) {
     this.isInstalled = isInstalled;
   }
 
-  public void uninstall() {
+  void uninstall() {
     // TODO: Implement.
   }
 }
