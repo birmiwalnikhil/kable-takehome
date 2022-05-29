@@ -21,7 +21,12 @@ public class Main {
   public static void main(String[] args) {
     PackageManager packageManager = new PackageManager();
     packageManager.depend(TCPIP, NETCARD);
-    packageManager.depend(TELNET, TCPIP);
+    packageManager.depend(TELNET, TCPIP, SOCKET);
+    packageManager.depend(DNS, TCPIP);
+    packageManager.depend(HTML, REGEX, XML);
+    packageManager.depend(REGEX, PARSING);
+    packageManager.depend(BROWSER, DNS, TCPIP, HTML, CSS);
 
+    packageManager.install(TCPIP);
   }
 }

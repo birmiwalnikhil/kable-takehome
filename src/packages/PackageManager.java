@@ -26,12 +26,6 @@ public class PackageManager {
    */
   public void depend(String packageA, String dependency, String...
 otherDependencies) {
-    // PackageA must not already be defined, as per the spec.
-    if (packages.containsKey(packageA)) {
-      echo("DEPEND on %s invalid; package already defined.", packageA);
-      return;
-    } 
-
     Package primaryPackage = getPackage(packageA);
     storePackage(primaryPackage);
 
@@ -46,18 +40,17 @@ otherDependencies) {
    for (String b : dependencies) {
       Package dep = getPackage(b); 
       primaryPackage.addDependency(dep);
-      echo("Adding dependency %s -> %s", primaryPackage.name, dep.name);
       dep.addNeededFor(primaryPackage);
       storePackage(dep);
     }
     
     // Echo the output, as per spec.
-    String formatLog = "DEPEND %s %s";
-    for (int i = 1; i <= otherDependencies.length; i++) {
-      formatLog += " %s";
+    StringBuilder sb = new StringBuilder();
+    sb.append("DEPEND ").append(packageA).append(" ").append(dependency);
+    for (String d : otherDependencies) {
+      sb.append(" ").append(d);
     }
-
-    echo(formatLog, packageA, dependency, otherDependencies);
+    echo(sb.toString());
     return;
   }
 
@@ -74,7 +67,6 @@ otherDependencies) {
     }
     // Recursively install any of the dependencies.
     for (Package dep : packageA.dependencies) {
-      echo("Installing %s for %s", dep.name, packageA.name);
       installPackage(dep);
     }
 
