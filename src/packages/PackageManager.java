@@ -59,11 +59,15 @@ otherDependencies) {
 
   /** Install {@code packageA}, as well as any uninstalled dependencies. */
   public void install(String packageA) {
-    installPackage(getPackage(packageA));
     echo("INSTALL %s", packageA); 
+    installPackage(getPackage(packageA));
   }
 
   private void installPackage(Package packageA) {
+    // Do nothing; the requested package is already installed..
+    if (packageA.isInstalled) {
+      return;
+    }
     // Recursively install any of the dependencies.
     for (Package dep : packageA.dependencies) {
       installPackage(dep);
