@@ -40,5 +40,4 @@ public class Package {
   public void uninstall() {
     // TODO: Implement.
   }
-
 }
