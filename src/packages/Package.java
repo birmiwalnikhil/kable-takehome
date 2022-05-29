@@ -40,4 +40,14 @@ class Package {
   void uninstall() {
     // TODO: Implement.
   }
+  
+  public String toString() {
+    StringBuilder sb = new StringBuilder();
+    sb.append(this.name).append(this.isInstalled ? "[x]" : "[]").append("[");
+    for (Package dep : this.dependencies) {
+      sb.append(dep.name).append(",");
+    }
+    sb.append("]");
+    return sb.toString();
+ }
 }

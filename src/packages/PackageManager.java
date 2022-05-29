@@ -32,19 +32,23 @@ otherDependencies) {
       return;
     } 
 
-    Package primaryPackage = getPackage(packageA); 
+    Package primaryPackage = getPackage(packageA);
+    storePackage(primaryPackage);
+
+    // For each dependency B, indicate that A is dependent on B,
+    // and that B is needed for A.
     Set<String> dependencies = new HashSet<>();
     dependencies.add(dependency);
     for (String otherDependency : otherDependencies) {
       dependencies.add(otherDependency);
     }
 
-    // For each dependency B, indicate that A is dependent on B,
-    // and that B is needed for A.
-    for (String b : dependencies) {
+   for (String b : dependencies) {
       Package dep = getPackage(b); 
       primaryPackage.addDependency(dep);
+      echo("Adding dependency %s -> %s", primaryPackage.name, dep.name);
       dep.addNeededFor(primaryPackage);
+      storePackage(dep);
     }
     
     // Echo the output, as per spec.
@@ -70,6 +74,7 @@ otherDependencies) {
     }
     // Recursively install any of the dependencies.
     for (Package dep : packageA.dependencies) {
+      echo("Installing %s for %s", dep.name, packageA.name);
       installPackage(dep);
     }
 
@@ -84,6 +89,12 @@ otherDependencies) {
   // TODO: Implement.
   public void list()  {}
 
+  public void debugLog() {
+    for (Package p : this.packages.values()) {
+      System.out.println(p.toString());
+    }
+  }
+
   /** Echo some feedback to the user. */
   private void echo(String formatLog, Object... objects) {
     System.out.println(String.format(formatLog, objects));
@@ -92,5 +103,10 @@ otherDependencies) {
   /** Retrieve a package given it's name, or create one if need be. */
   private Package getPackage(String name) {
     return this.packages.getOrDefault(name, new Package(name));
+  }
+  
+  /** Store a package with its given name. */
+  private void storePackage(Package p) {
+    this.packages.put(p.name, p);
   }
 }

@@ -23,6 +23,5 @@ public class Main {
     packageManager.depend(TCPIP, NETCARD);
     packageManager.depend(TELNET, TCPIP);
 
-    packageManager.install(TELNET);
   }
 }
