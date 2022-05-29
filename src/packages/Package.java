@@ -12,8 +12,8 @@ class Package {
   /** All packages that this package depends on. */
   final Set<Package> dependencies;
 
-  /** All packages that this package is needed for. */
-  private final Set<Package> neededFor;
+  /** All packages needed by this one. */
+  final Set<Package> neededBy;
 
   /** Whether this package is installed. */
   boolean isInstalled;
@@ -21,7 +21,7 @@ class Package {
   Package(String name) {
     this.name = name;
     this.dependencies = new HashSet<>();
-    this.neededFor = new HashSet<>();
+    this.neededBy = new HashSet<>();
     this.isInstalled = false;
   }
 
@@ -29,16 +29,24 @@ class Package {
     this.dependencies.add(dependency);
   }
 
-  void addNeededFor(Package upstream) {
-    this.neededFor.add(upstream);
+  void addNeededBy(Package upstream) {
+    this.neededBy.add(upstream);
   }
 
   void setInstall(boolean isInstalled) {
     this.isInstalled = isInstalled;
   }
 
-  void uninstall() {
-    // TODO: Implement.
+  // Return all installed packages actively needed by this one.
+  Set<Package> activeNeededByPackages() {
+    Set<Package> installedPackages = new HashSet<>();
+    for (Package p : neededBy) {
+      if (p.isInstalled) {
+        installedPackages.add(p);
+      }
+    }
+
+    return installedPackages;
   }
   
   public String toString() {

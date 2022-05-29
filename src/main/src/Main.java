@@ -28,5 +28,7 @@ public class Main {
     packageManager.depend(BROWSER, DNS, TCPIP, HTML, CSS);
 
     packageManager.install(TCPIP);
+    packageManager.remove(NETCARD);
+    packageManager.remove(TCPIP);
   }
 }

@@ -40,7 +40,7 @@ otherDependencies) {
    for (String b : dependencies) {
       Package dep = getPackage(b); 
       primaryPackage.addDependency(dep);
-      dep.addNeededFor(primaryPackage);
+      dep.addNeededBy(primaryPackage);
       storePackage(dep);
     }
     
@@ -75,9 +75,43 @@ otherDependencies) {
     storePackage(packageA);
     echo("\tInstalling %s", packageA.name); 
   }
-  
-  // TODO: Implement.
-  public void remove(String packageA) {}
+ 
+  /** 
+   * Attempt to uninstall {@code packageA}, cleaning up
+   * any unused dependencies in the process.
+   */  
+  public void remove(String packageA) {
+    Package p = getPackage(packageA);    
+
+    // Echo the command back to the user.
+    echo("REMOVE %s", packageA);
+    if (!p.isInstalled) {
+      echo("\t%s is not installed.", packageA);
+      return;
+    }
+    
+    if (!p.activeNeededByPackages().isEmpty()) {
+      echo("\t%s is still needed.", packageA);
+      return;
+    }
+
+    removePackage(p); 
+  }
+
+  private void removePackage(Package p) {
+    // Mark this package as uninstalled.
+    p.setInstall(false);
+    
+    echo("\tRemoving %s", p.name);
+
+    // Attempt to uninstall any dependencies if they are only used
+    // by p.
+    for (Package dep : p.dependencies) {
+      if (dep.activeNeededByPackages().isEmpty()) {
+        removePackage(dep);
+      } 
+    }
+  }
 
   // TODO: Implement.
   public void list()  {}
