@@ -113,8 +113,16 @@ otherDependencies) {
     }
   }
 
-  // TODO: Implement.
-  public void list()  {}
+  
+  /** List all installed packages. */
+  public void list()  {
+    echo("LIST");
+    for (Package p : this.packages.values()) {
+      if (p.isInstalled) {
+        echo("\t%s", p.name);
+      }
+    }
+  }
 
   public void debugLog() {
     for (Package p : this.packages.values()) {
