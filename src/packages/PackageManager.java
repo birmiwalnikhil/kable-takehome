@@ -80,6 +80,7 @@ otherDependencies) {
 
     // Mark this package as installed, and echo back to the user.
     packageA.setInstall(true);
+    storePackage(packageA);
     echo("\tInstalling %s", packageA.name); 
   }
   
